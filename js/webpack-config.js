@@ -6,9 +6,13 @@ const PluginsConfig = require('./plugins-config');
 class WebpackConfig {
 
   constructor(config = {}) {
+
+    if(!config.dirname ) { throw new Error(`It's necessary pass config.dirname value for WebpackConfig class`) }
+
+    this.dirname = config.dirname;
     this.env = config.env || 'production';
     this.isProd = this.env  === 'production';
-    this.buildFolder = config.buildFolder || './dist'
+    this.buildFolder = config.buildFolder || 'dist'
     this.entriesPath = config.entriesPath || './src/js'
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
     this.jsTranspilation = config.jsTranspilation || {
@@ -87,7 +91,7 @@ class WebpackConfig {
 
   getOutput() {
       return {
-        path: path.resolve(__dirname, this.buildFolder),
+        path: path.resolve(this.dirname, this.buildFolder),
         filename: `${this.jsBuildNameFolder}/[name]${ this.isProd ? '-[hash]': '' }.js`,
         publicPath: '/'
       };
