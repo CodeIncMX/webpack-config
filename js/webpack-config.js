@@ -76,7 +76,7 @@ class WebpackConfig {
       const rules = [];
       const lc = new LoadersConfig(this.isProd);
 
-      if (this.pugTemplatesPath) { rules.push(lc.getPugRule()) } 
+      if (this.pugOptions) { rules.push(lc.getPugRule()) } 
       if (this.urlOptions ) { rules.push(lc.getUrlRule( this.urlOptions )) }
       if (this.jsTranspilation) { rules.push(lc.getBabelRule(this.jsTranspilation)) }
       if (this.manageImageOptions) { rules.push(lc.getManageImagesRule( this.manageImageOptions )) }
