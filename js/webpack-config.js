@@ -7,31 +7,31 @@ class WebpackConfig {
 
   constructor(config = {}) {
     this.env = config.env || 'production';
-    this.isProd = this.env  === 'production' ? true : false;
+    this.isProd = this.env  === 'production';
     this.buildFolder = config.buildFolder || './dist'
     this.entriesPath = config.entriesPath || './src/js'
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
-    this.jsTranspilation = config.jsTranspilation || { 
-      plugins: [ '@babel/plugin-transform-runtime' ], 
+    this.jsTranspilation = config.jsTranspilation || {
+      plugins: [ '@babel/plugin-transform-runtime' ],
       presets: [ '@babel/preset-env' ] 
-    } // For deactivate use -> false
+    } // For deactivate use -> 'disabled'
     this.gzipCompress = config.gzipCompress || true
     this.criticalCss = config.criticalCss || true // { base: util.build() }
     this.useAutoprefixer = config.useAutoprefixer || true
     this.cleanBeforeBuild = config.cleanBeforeBuild || true
-    this.manageImageOptions = config.manageImageOptions || { quality: 70 } // Options only apply for webp images created //For deactivate use -> false
-    this.minifyCss = config.minifyCss || { filename: 'css/[name]-[hash].css' } // Only applies in production mode. For deactivate use false
-    this.compressImages = config.compressImages || {pngquant: { quality: '65-90' } } //For deactivate use -> false
+    this.manageImageOptions = config.manageImageOptions || { quality: 70 } // Options only apply for webp images created //For deactivate use -> 'disabled'
+    this.minifyCss = config.minifyCss || { filename: 'css/[name]-[hash].css' } // Only applies in production mode. For deactivate use 'disabled'
+    this.compressImages = config.compressImages || {pngquant: { quality: '65-90' } } //For deactivate use -> 'disabled'
     this.urlOptions = config.urlOptions || { limit: 1000, outputPath: 'assets' } // For deactivate images in b64 use -> { limit: false }
     this.jsGlobalVariables = config.jsGlobalVariables || { IS_PROD: this.isProd }
-    this.sassOptions = config.sassOptions || { prependData: `$IS_PROD: ${this.isProd};` } // For deactivate use --> false || true if not want yni options
+    this.sassOptions = config.sassOptions || { prependData: `$IS_PROD: ${this.isProd};` } // For deactivate use --> 'disabled' || true if not want yni options
     this.pugOptions = config.pugOptions || {
       templatesDir: 'src/pug/UI/pages',
       indexFilename: 'home.pug',
-    }// For deactivate use of pug false
+    }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
       paths: 'src/pug/**/*',
-      whitelistPatterns: [/webp--disabled/] // For deactivate use -> false
+      whitelistPatterns: [/webp--disabled/] // For deactivate use -> 'disabled'
     }
   }
 
@@ -55,17 +55,17 @@ class WebpackConfig {
     if (this.jsGlobalVariables) { pluginsList.push( pc.setJsGlobalVariables(this.jsGlobalVariables)); }
 
     if (this.isProd) {
-      if (this.cleanBeforeBuild) { pluginsList.push(pc.setCleanBuild()); }
-      if (this.compressImages) { pluginsList.push(pc.setImageCompression(this.compressImages)); }
-      if (this.useAutoprefixer) { pluginsList.push(pc.setAutoprefixer()); }
-      if (this.minifyCss) { pluginsList.push(pc.setCssMinification(this.minifyCss)) }
-      if (this.pugOptions) { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
-      if (this.criticalCss) { pluginsList.push(pc.setExtractCriticalCss(typeof this.criticalCss === 'object' ? this.criticalCss : false)) }
-      if (this.purgeCss) { pluginsList.push(pc.setPurgeCss(this.purgeCss)) }
-      if (this.gzipCompress) { pluginsList.push(pc.setGZipCompression()) } 
+      if (this.cleanBeforeBuild !== 'disabled') { pluginsList.push(pc.setCleanBuild()); }
+      if (this.compressImages !== 'disabled') { pluginsList.push(pc.setImageCompression(this.compressImages)); }
+      if (this.useAutoprefixer !== 'disabled') { pluginsList.push(pc.setAutoprefixer()); }
+      if (this.minifyCss !== 'disabled') { pluginsList.push(pc.setCssMinification(this.minifyCss)) }
+      if (this.pugOptions !== 'disabled') { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
+      if (this.criticalCss !== 'disabled') { pluginsList.push(pc.setExtractCriticalCss(typeof this.criticalCss === 'object' ? this.criticalCss : false)) }
+      if (this.purgeCss !== 'disabled') { pluginsList.push(pc.setPurgeCss(this.purgeCss)) }
+      if (this.gzipCompress !== 'disabled') { pluginsList.push(pc.setGZipCompression()) } 
     } else {
-      if (this.useAutoprefixer) { pluginsList.push(pc.setAutoprefixer()); }
-      if (this.pugOptions) { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
+      if (this.useAutoprefixer !== 'disabled') { pluginsList.push(pc.setAutoprefixer()); }
+      if (this.pugOptions !== 'disabled') { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
 
     }
 
@@ -76,11 +76,11 @@ class WebpackConfig {
       const rules = [];
       const lc = new LoadersConfig(this.isProd);
 
-      if (this.pugOptions) { rules.push(lc.getPugRule()) } 
+      if (this.pugOption !== 'disabled') { rules.push(lc.getPugRule()) } 
       if (this.urlOptions ) { rules.push(lc.getUrlRule( this.urlOptions )) }
-      if (this.jsTranspilation) { rules.push(lc.getBabelRule(this.jsTranspilation)) }
-      if (this.manageImageOptions) { rules.push(lc.getManageImagesRule( this.manageImageOptions )) }
-      if (this.sassOptions) { rules.push(lc.getSassRule(typeof this.sassOptions === 'object' ? this.sassOptions : false )) }
+      if (this.jsTranspilation !== 'disabled') { rules.push(lc.getBabelRule(this.jsTranspilation)) }
+      if (this.manageImageOptions !== 'disabled') { rules.push(lc.getManageImagesRule( this.manageImageOptions )) }
+      if (this.sassOptions !== 'disabled') { rules.push(lc.getSassRule(typeof this.sassOptions === 'object' ? this.sassOptions : false )) }
 
       return { rules }
   }
