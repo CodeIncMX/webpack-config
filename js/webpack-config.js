@@ -2,6 +2,7 @@ const glob = require('glob');
 const path = require('path');
 const LoadersConfig = require('./loaders-config');
 const PluginsConfig = require('./plugins-config');
+const optimization = require('./optimization-config')
 
 class WebpackConfig {
 
@@ -47,7 +48,13 @@ class WebpackConfig {
       output: this.getOutput(),
       module: this.getModule(),
       plugins: this.getPlugins(),
-      // optimization: { minimizer: env.production ? optimization.getOptimization : [] },
+      optimization: this.getOptimization(),
+    }
+  }
+
+  getOptimization() {
+    return {
+      minimizer: this.isProd ? optimization.getOptimizationList : []
     }
   }
 
