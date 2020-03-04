@@ -30,7 +30,7 @@ class WebpackConfig {
       indexFilename: 'home.pug',
     }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
-      paths: 'src/pug/**/*',
+      paths: glob.sync('./src/pug/**/*', {nodir:true}),
       whitelistPatterns: [/webp--disabled/] // For deactivate use -> 'disabled'
     }
   }
