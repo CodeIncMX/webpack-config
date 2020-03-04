@@ -1,0 +1,38 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const glob = require('glob');
+const path = require('path');
+
+class HtmlPlugin {
+
+  constructor(options){
+    this.templatesDir = options.templatesDir;
+    this.indexFilename = options.indexFilename;
+  }
+
+  createPluginsList() {
+    let htmlPluginsList = []
+
+    glob.sync(`${this.templatesDir}/*.pug`).forEach( filePath => {
+      const filename = path.basename(filePath);
+      const filenameWithoutExt = path.basename(filePath, '.pug');
+      const pluginConf = {
+        template: `${this.templatesDir}/${filename}`,
+        filename: (this.indexFilename == filename) ? 'index.html' : `${filenameWithoutExt}.html`
+      }
+      htmlPluginsList.push(new HtmlWebpackPlugin(pluginConf))
+    })
+
+    return htmlPluginsList
+  }
+
+  setPug = () => {
+    let entries = {}
+    glob.sync(`${this.entriesPath}/*.js`).forEach( filePath => {
+      const fileName = path.basename(filePath,'.js');
+      entries[fileName] = filePath;
+    })
+  }
+
+}
+
+module.exports = HtmlPlugin;
