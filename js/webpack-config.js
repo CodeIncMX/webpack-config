@@ -14,7 +14,7 @@ class WebpackConfig {
     this.env = config.env.production ? 'production' : 'development' || 'production';
     this.isProd = this.env  === 'production';
     this.buildFolder = config.buildFolder || 'dist'
-    this.entriesPath = config.entriesPath || './src/js'
+    this.entriesPath = config.entriesPath || './src/js/UI/pages'
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
     this.jsTranspilation = config.jsTranspilation || {
       plugins: [ '@babel/plugin-transform-runtime' ],
