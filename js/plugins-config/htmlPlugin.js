@@ -25,14 +25,6 @@ class HtmlPlugin {
     return htmlPluginsList
   }
 
-  setPug = () => {
-    let entries = {}
-    glob.sync(`${this.entriesPath}/*.js`).forEach( filePath => {
-      const fileName = path.basename(filePath,'.js');
-      entries[fileName] = filePath;
-    })
-  }
-
 }
 
 module.exports = HtmlPlugin;

@@ -11,7 +11,7 @@ class WebpackConfig {
     if(!config.dirname ) { throw new Error(`It's necessary pass config.dirname value for WebpackConfig class`) }
 
     this.dirname = config.dirname;
-    this.env = config.env || 'production';
+    this.env = config.env.production ? 'production' : 'development' || 'production';
     this.isProd = this.env  === 'production';
     this.buildFolder = config.buildFolder || 'dist'
     this.entriesPath = config.entriesPath || './src/js'
@@ -21,7 +21,7 @@ class WebpackConfig {
       presets: [ '@babel/preset-env' ] 
     } // For deactivate use -> 'disabled'
     this.gzipCompress = config.gzipCompress || true
-    this.criticalCss = config.criticalCss || true // { base: util.build() }
+    this.criticalCss = config.criticalCss || { base: path.resolve(this.dirname, this.buildFolder)}
     this.useAutoprefixer = config.useAutoprefixer || true
     this.cleanBeforeBuild = config.cleanBeforeBuild || true
     this.manageImageOptions = config.manageImageOptions || { quality: 70 } // Options only apply for webp images created //For deactivate use -> 'disabled'
@@ -35,7 +35,7 @@ class WebpackConfig {
       indexFilename: 'home.pug',
     }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
-      paths: glob.sync('./src/pug/**/*', {nodir:true}),
+      paths: glob.sync(`${path.resolve(this.dirname, 'src')}/pug/**/*`, {nodir:true}),
       whitelistPatterns: [/webp--disabled/] // For deactivate use -> 'disabled'
     }
   }
@@ -63,7 +63,6 @@ class WebpackConfig {
     let pluginsList = []
     const pc = new PluginsConfig(this.isProd);
 
-    if (this.jsGlobalVariables) { pluginsList.push( pc.setJsGlobalVariables(this.jsGlobalVariables)); }
 
     if (this.isProd) {
       if (this.cleanBeforeBuild !== 'disabled') { pluginsList.push(pc.setCleanBuild()); }
@@ -73,12 +72,14 @@ class WebpackConfig {
       if (this.pugOptions !== 'disabled') { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
       if (this.criticalCss !== 'disabled') { pluginsList.push(pc.setExtractCriticalCss(typeof this.criticalCss === 'object' ? this.criticalCss : false)) }
       if (this.purgeCss !== 'disabled') { pluginsList.push(pc.setPurgeCss(this.purgeCss)) }
-      if (this.gzipCompress !== 'disabled') { pluginsList.push(pc.setGZipCompression()) } 
+      if (this.gzipCompress !== 'disabled') { pluginsList.push(pc.setGZipCompression()) }
     } else {
       if (this.useAutoprefixer !== 'disabled') { pluginsList.push(pc.setAutoprefixer()); }
       if (this.pugOptions !== 'disabled') { pc.getPugPlugins(this.pugOptions).forEach( plugin => { pluginsList.push(plugin) }) }
 
     }
+
+    if (this.jsGlobalVariables) { pluginsList.push( pc.setJsGlobalVariables(this.jsGlobalVariables)); }
 
     return pluginsList;
   }
