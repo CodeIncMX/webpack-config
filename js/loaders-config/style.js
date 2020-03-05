@@ -1,8 +1,16 @@
+const path = require('path')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 
 const use = [
     'css-loader',
-    'postcss-loader'
+    {
+        loader: 'postcss-loader',
+        options: {
+            config: {
+                path: path.resolve(__dirname, '../postcss.config.js')
+            }
+        }
+    }
 ]
 
 const devSass = (options) => {
