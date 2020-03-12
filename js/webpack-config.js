@@ -90,9 +90,9 @@ class WebpackConfig {
       const lc = new LoadersConfig(this.isProd);
 
       if (this.pugOption !== 'disabled') { rules.push(lc.getPugRule()) } 
+      if (this.manageImageOptions !== 'disabled') { rules.push(lc.getManageImagesRule( this.manageImageOptions )) }
       if (this.urlOptions ) { rules.push(lc.getUrlRule( this.urlOptions )) }
       if (this.jsTranspilation !== 'disabled') { rules.push(lc.getBabelRule(this.jsTranspilation)) }
-      if (this.manageImageOptions !== 'disabled') { rules.push(lc.getManageImagesRule( this.manageImageOptions )) }
       if (this.sassOptions !== 'disabled') { rules.push(lc.getSassRule(typeof this.sassOptions === 'object' ? this.sassOptions : false )) }
 
       return { rules }
