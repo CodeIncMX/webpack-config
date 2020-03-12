@@ -7,6 +7,7 @@ class HtmlPlugin {
   constructor(options){
     this.templatesDir = options.templatesDir;
     this.indexFilename = options.indexFilename;
+    this.faviconFile = options.faviconFile;
   }
 
   createPluginsList() {
@@ -17,7 +18,8 @@ class HtmlPlugin {
       const filenameWithoutExt = path.basename(filePath, '.pug');
       const pluginConf = {
         template: `${this.templatesDir}/${filename}`,
-        filename: (this.indexFilename == filename) ? 'index.html' : `${filenameWithoutExt}.html`
+        filename: (this.indexFilename == filename) ? 'index.html' : `${filenameWithoutExt}.html`,
+        favicon: `${this.faviconFile}`
       }
       htmlPluginsList.push(new HtmlWebpackPlugin(pluginConf))
     })

@@ -1,6 +1,6 @@
 {
   "name": "@codeinc.mx/webpack-config",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Webpack configuration for most popular kinds of projects for Code Inc MX",
   "main": "js/webpack-config.js",
   "directories": {

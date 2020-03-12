@@ -33,6 +33,7 @@ class WebpackConfig {
     this.pugOptions = config.pugOptions || {
       templatesDir: 'src/pug/UI/pages',
       indexFilename: 'home.pug',
+      faviconFile: 'src/favicon.png',
     }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
       paths: glob.sync(`${path.resolve(this.dirname, 'src')}/pug/**/*`, {nodir:true}),
