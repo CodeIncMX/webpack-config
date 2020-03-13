@@ -14,7 +14,10 @@ class WebpackConfig {
     this.env = config.env.production ? 'production' : 'development' || 'production';
     this.isProd = this.env  === 'production';
     this.buildFolder = config.buildFolder || 'dist'
-    this.entriesPath = config.entriesPath || './src/Pages'
+    this.entries = config.entries || {
+      path: './src/Pages',
+      finalJsName: 'DIR'
+    }
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
     this.jsTranspilation = config.jsTranspilation || {
       plugins: [ '@babel/plugin-transform-runtime' ],
@@ -32,7 +35,8 @@ class WebpackConfig {
     this.sassOptions = config.sassOptions || { prependData: `$IS_PROD: ${this.isProd};` } // For deactivate use --> 'disabled' || true if not want yni options
     this.pugOptions = config.pugOptions || {
       templatesDir: 'src/Pages',
-      indexFilename: 'home.pug',
+      finalHtmlName: 'DIR', // Takes de dir name for the html result -> use 'FILE0 in order it takes the pug file name as html final name
+      indexName: 'home',
       faviconFile: 'src/favicon.png',
     }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
@@ -107,10 +111,15 @@ class WebpackConfig {
 
   getEntry() {
     let entries = {}
-    glob.sync(`${this.entriesPath}/**/*.js`).forEach( filePath => {
-      const fileName = path.basename(filePath,'.js');
-      entries[fileName] = filePath;
+    glob.sync(`${this.entries.path}/**/*.js`).forEach( filePath => {
+
+      const jsName = (this.entries.finalJsName === 'FILE')
+        ? path.basename(filePath, '.js')
+        : path.dirname(filePath).replace(this.entries.path, '').replace('/','');
+
+      entries[jsName] = filePath;
     })
+
     return entries;
   }
 

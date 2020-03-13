@@ -6,21 +6,26 @@ class HtmlPlugin {
 
   constructor(options){
     this.templatesDir = options.templatesDir;
-    this.indexFilename = options.indexFilename;
+    this.indexName = options.indexName;
     this.faviconFile = options.faviconFile;
+    this.finalHtmlName = options.finalHtmlName;
   }
 
   createPluginsList() {
     let htmlPluginsList = []
 
-    glob.sync(`${this.templatesDir}/**/*.pug`).forEach( filePath => {
-      const filename = path.basename(filePath);
-      const filenameWithoutExt = path.basename(filePath, '.pug');
+    glob.sync(`${this.templatesDir}/**/*.pug`).forEach( filePath => { 
+
+      const htmlName = (this.finalHtmlName === 'FILE')
+        ? path.basename(filePath, '.pug')
+        : path.dirname(filePath).replace(this.templatesDir, '').replace('/','');
+
       const pluginConf = {
         template: `${filePath}`,
-        filename: (this.indexFilename == filename) ? 'index.html' : `${filenameWithoutExt}.html`,
+        filename: (this.indexName == htmlName) ? 'index.html' : `${htmlName}.html`,
         favicon: `${this.faviconFile}`
       }
+
       htmlPluginsList.push(new HtmlWebpackPlugin(pluginConf))
     })
 
