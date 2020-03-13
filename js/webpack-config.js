@@ -14,7 +14,7 @@ class WebpackConfig {
     this.env = config.env.production ? 'production' : 'development' || 'production';
     this.isProd = this.env  === 'production';
     this.buildFolder = config.buildFolder || 'dist'
-    this.entriesPath = config.entriesPath || './src/js/UI/pages'
+    this.entriesPath = config.entriesPath || './src/Pages'
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
     this.jsTranspilation = config.jsTranspilation || {
       plugins: [ '@babel/plugin-transform-runtime' ],
@@ -31,12 +31,12 @@ class WebpackConfig {
     this.jsGlobalVariables = config.jsGlobalVariables || { IS_PROD: this.isProd }
     this.sassOptions = config.sassOptions || { prependData: `$IS_PROD: ${this.isProd};` } // For deactivate use --> 'disabled' || true if not want yni options
     this.pugOptions = config.pugOptions || {
-      templatesDir: 'src/pug/UI/pages',
+      templatesDir: 'src/Pages',
       indexFilename: 'home.pug',
       faviconFile: 'src/favicon.png',
     }// For deactivate use of pug 'disabled'
     this.purgeCss = config.purgeCss || {
-      paths: glob.sync(`${path.resolve(this.dirname, 'src')}/pug/**/*`, {nodir:true}),
+      paths: glob.sync(`${path.resolve(this.dirname, 'src')}/**/*`, {nodir:true}),
       whitelistPatterns: [/webp--disabled/] // For deactivate use -> 'disabled'
     }
   }
@@ -60,7 +60,6 @@ class WebpackConfig {
   }
 
   getPlugins() {
-    // plugins: plugins.getPlugins(env.production),
     let pluginsList = []
     const pc = new PluginsConfig(this.isProd);
 

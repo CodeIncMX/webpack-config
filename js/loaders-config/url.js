@@ -5,7 +5,7 @@ rule = (isProd, { limit, outputPath })  => {
           loader: 'url-loader',
           options:{
               limit,
-              name: isProd ? '[name].[hash].[ext]' : '[name].[ext]',
+              name: isProd ? '[name]-[hash].[ext]' : '[name].[ext]',
               outputPath,
           }
       }

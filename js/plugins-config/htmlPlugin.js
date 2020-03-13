@@ -13,7 +13,7 @@ class HtmlPlugin {
   createPluginsList() {
     let htmlPluginsList = []
 
-    glob.sync(`${this.templatesDir}/*.pug`).forEach( filePath => {
+    glob.sync(`${this.templatesDir}/**/*.pug`).forEach( filePath => {
       const filename = path.basename(filePath);
       const filenameWithoutExt = path.basename(filePath, '.pug');
       const pluginConf = {
