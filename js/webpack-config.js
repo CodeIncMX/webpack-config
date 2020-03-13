@@ -18,7 +18,7 @@ class WebpackConfig {
     this.jsBuildNameFolder = config.jsBuildNameFolder || 'js'
     this.jsTranspilation = config.jsTranspilation || {
       plugins: [ '@babel/plugin-transform-runtime' ],
-      presets: [ '@babel/preset-env' ] 
+      presets: [ '@babel/preset-env' ]
     } // For deactivate use -> 'disabled'
     this.gzipCompress = config.gzipCompress || true
     this.criticalCss = config.criticalCss || { base: path.resolve(this.dirname, this.buildFolder)}
@@ -107,7 +107,7 @@ class WebpackConfig {
 
   getEntry() {
     let entries = {}
-    glob.sync(`${this.entriesPath}/*.js`).forEach( filePath => {
+    glob.sync(`${this.entriesPath}/**/*.js`).forEach( filePath => {
       const fileName = path.basename(filePath,'.js');
       entries[fileName] = filePath;
     })

@@ -17,7 +17,7 @@ class HtmlPlugin {
       const filename = path.basename(filePath);
       const filenameWithoutExt = path.basename(filePath, '.pug');
       const pluginConf = {
-        template: `${this.templatesDir}/${filename}`,
+        template: `${filePath}`,
         filename: (this.indexFilename == filename) ? 'index.html' : `${filenameWithoutExt}.html`,
         favicon: `${this.faviconFile}`
       }
