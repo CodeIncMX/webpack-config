@@ -1,6 +1,6 @@
 rule = (isProd, { limit, outputPath })  => {
   return {
-      test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm|webp$/,
+      test: /\.jpg|png|gif|woff|eot|ttf|mp4|webm|webp$/,
       use: {
           loader: 'url-loader',
           options:{
